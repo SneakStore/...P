@@ -1,0 +1,685 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Pixel Fegze</title>
+    <style>
+        /* Styles CSS pour la mise en page et le design */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff; /* Fond blanc */
+            color: #000; /* Couleur du texte noir */
+            padding: 20px;
+            text-align: center; /* Texte central */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .logo {
+            font-family: Arial, sans-serif;
+            font-size: 30px;
+            color: white;
+            padding: 0px 0px;
+            margin-top: -5px;
+        }
+
+        header {
+            background-color: #060B15; /* Couleur similaire à "ECRAN GG" */
+            color: #fff; /* Couleur du texte en blanc */
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between; /* Aligner les éléments à gauche et à droite */
+            align-items: center;
+            margin-bottom: 20px; /* Espacement en dessous de la barre de navigation */
+            margin-top: -25px;
+        }
+
+        footer {
+            background-color: #2C3850; /* Couleur similaire à "ECRAN GG" */
+            color: #fff; /* Couleur du texte en blanc */
+            padding: 10px 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Aligner les éléments à gauche et à droite */
+            margin-top: -20px; /* Colle la barre de navigation en bas */
+        }
+
+        .barre-navigation {
+            display: flex;
+            align-items: center;
+        }
+
+        .barre-navigation a {
+            color: #fff; /* Couleur du texte blanc */
+            text-decoration: none; /* Pas de soulignement */
+            margin: 0 20px; /* Marge entre les éléments de navigation */
+            font-size: 18px; /* Taille de la police */
+            text-transform: uppercase; /* Texte en majuscule */
+            transition: box-shadow 0.3s; /* Transition douce pour l'ombre */
+            position: relative; /* Position relative pour déplacer l'ombre */
+        }
+
+        .barre-navigation a:hover {
+            box-shadow: 0 0 10px rgba(255,255,255,0.5); /* Ombre douce blanche au survol */
+        }
+
+        /* Ajoutez ce style pour l'effet de survol des liens */
+        .barre-navigation a:hover {
+            border-bottom: 2px solid white; /* Ajoute un trait blanc en dessous du lien */
+        }
+     #searchInput {
+    padding: 10px 15px; /* Augmente la taille de la zone de recherche */
+    border-radius: 5px; /* Arrondit les coins de la zone de recherche */
+    border: 1px solid #ccc; /* Ajoute une bordure grise autour de la zone de recherche */
+    font-size: 16px; /* Augmente la taille de la police */
+    margin-right: 10px; /* Ajoute un espace à droite de la zone de recherche */
+    width: 300px; /* Définit une largeur fixe pour la zone de recherche */
+    transition: border-color 0.3s; /* Transition douce pour la couleur de la bordure */
+}
+
+#searchInput:focus {
+    border-color: #2C3850; /* Change la couleur de la bordure lorsque la zone de recherche est active */
+}
+
+/* Style pour le bouton du panier */
+#panier-btn {
+    background-color: #ff0000;
+    color: #ffffff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Style pour le modal de confirmation */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+        #toggleSideNav {
+            width: 30px;
+            height: 20px;
+            top: -5px;
+            position: relative;
+            cursor: pointer;
+            margin-right: 5px; /* Décalage de 10px vers la droite */
+        }
+
+        #toggleSideNav div {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            margin: 4px 0;
+        }
+
+        #sideNav {
+            background-color: rgba(44, 56, 80, 0.9); /* Fond sombre semi-transparent */
+            color: #fff;
+            width: 250px; /* Augmenter la largeur de la barre latérale */
+            position: fixed;
+            top: 0;
+            left: -250px; /* Changer la position initiale pour cacher la barre latérale */
+            bottom: 0;
+            padding-top: 50px;
+            z-index: 999; /* Mettre la barre latérale au premier plan */
+            transition: left 0.3s ease;
+            overflow-y: auto; /* Permet de déplacer le contenu de la barre latérale si elle dépasse */
+        }
+
+        #closeBtn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            z-index: 1000; /* S'assurer que le bouton de fermeture est au-dessus du fond sombre */
+        }
+
+        .barre-latérale a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 20px 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .barre-latérale a:hover {
+            background-color: #154360;
+        }
+/* Style pour le conteneur des produits */
+.conteneur-produits {
+    display: flex; /* Affiche les produits côte à côte */
+    flex-wrap: wrap; /* Permet de passer à la ligne si l'espace est insuffisant */
+    justify-content: center; /* Centre les produits horizontalement */
+}
+
+
+
+    /* Styles CSS pour les produits */
+/* Styles CSS pour les produits */
+.produit {
+    background-color: #FFFFFF; /* Fond blanc pour les produits */
+    padding: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px #484B4D; /* Ajout de l'ombre */
+    text-align: left; /* Alignement du texte à gauche */
+    max-width: 200px; /* Largeur maximale du produit */
+    position: relative; /* Position relative pour le positionnement absolu de la ligne */
+}
+
+
+
+    .produit img {
+        max-width: 100%;
+        border-radius: 5px;
+        margin-bottom: 10px; /* Spacing below the image */
+    }
+
+    .produit h2 {
+        margin-top: 0;
+        font-size: 20px; /* Title font size */
+        color: #000000; /* Dark green */
+    }
+
+    .produit p {
+        margin-bottom: 10px;
+        color: #000000; /* Light text color */
+    }
+
+    button {
+        background-color: #00ff00; /* Green button */
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: #009900; /* Darker green on hover */
+    }
+   </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Pixel Fegze</div>
+    <div class="barre-navigation">
+        <input id="searchInput" type="text" placeholder="Rechercher..." style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ccc; width: 200px; 
+
+margin-right: 10px;">
+
+        <button onclick="filterCategories()" style="background-color: #2C3850; color: #fff; padding: 5px 10px; border: none; border-radius: 5px; cursor: 
+
+pointer; font-size: 16px;">Rechercher</button>
+
+    </div>
+    <div class="barre-navigation">
+        <a href="#">Accueil</a>
+        <a href="#">Produits</a>
+        <a href="#">Actualités</a>
+        <a href="#">Contact</a>
+    </div>
+</header>
+
+<footer>
+    <div class="barre-navigation">
+        <div id="toggleSideNav">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <a href="#">Service client</a>
+        <a href="#">Livraison et retours</a>
+    </div>
+</footer>
+
+<div class="barre-latérale" id="sideNav">
+    <div id="closeBtn">&times;</div>
+    <a href="#">Tendances</a>
+    <a href="#">Meilleures ventes</a>
+    <a href="#">Dernières Nouveautés</a>
+    <a href="#">Baromètre des ventes</a>
+    <a href="#">Contenu numérique et appareils</a>
+    <a href="#">Amazon Prime Video</a>
+    <a href="#">Amazon Music</a>
+    <a href="#">Echo, Alexa et Maison connectée</a>
+    <a href="#">Amazon Fire TV</a>
+    <a href="#">Liseuses Kindle et ebooks</a>
+    <a href="#">Livres audio Audible</a>
+    <a href="#">Appstore pour Android</a>
+    <a href="#">Choisir une catégorie</a>
+    <a href="#">Livres</a>
+    <a href="#">Musique, DVD et Blu-ray</a>
+    <a href="#">Jeux vidéo et consoles</a>
+</div>
+     <div class="conteneur-produits">
+        <div class="produit" id=" souris logitech" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confirmation-d-achat-HyperX-
+
+Cloud-II/';" style="cursor: 
+
+pointer;">
+            <img src="https://m.media-amazon.com/images/I/5138fK1qKuL._AC_UL320_.jpg" alt="" title="Description de l'image 1">
+            <pLogitech Souris de jeu sans fil G703 LIGHTSPEED, capteur HERO 25K, 25 600 DPI, RGB, poids réglables, 6 boutons... </p>
+            <p>Prix du Produit : 1 3600DA</p>
+        </div>
+<div class="produit" id="clavier Roccat" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confirmation-d-achat-HyperX-
+
+Cloud-II/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/81gHPF0poeL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 1">
+            <pRoccat Vulcan II Mini Air – Clavier Gaming Optique et Mécanique 65 %, Fonctionnalités sans Fil et 
+
+Vulcan II Mini Air – Clavier Gaming Optique et Mécanique 65 %, Fonctionnalités sans Fil et... </p>
+            <p>Prix du Produit : 1 3600DA</p>
+        </div>
+<div class="produit" id="casque jbl" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71R2vziuTIL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>JBL Quantum One – Casque gaming USB professionel avec son immersif QuantumSphere JBL à détection d...</p>
+            <p>Prix du Produit : 3 8100DA</p>
+        </div>
+        <div class="produit" id=" souris Havit" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confirmation-d-achat-RAZER-FILAIRE-
+
+SOURIS-BASILISK-V2-NOIR-/';" style="cursor: 
+
+pointer;">
+            <img src="https://m.media-amazon.com/images/I/41IZr4jG2dL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 2">
+            <p>Mouse Havit MS1003 2400 DPI RGB Black...</p>
+            <p>Prix du Produit : 4500DA</p>
+        </div>
+
+        <div class="produit" id="souris Razer" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" 
+
+style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/61fTb4FhkDL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Razer DeathAdder Essential (2021) - Souris Gaming Filaire avec Capteur Optique de 6400 DPI (Design Ergonomique, 5...</p>
+            <p>Prix du Produit : 5400DA</p>
+        </div>
+
+ <div class="produit" id="souris Glorious" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/61xfS1o5+XL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Glorious Gaming Model O 2 Wireless Souris de Jeu sans Fil - Hybride 2,4 GHz et Bluetooth, 68 g, superlégère,...</p>
+            <p>Prix du Produit : 2 6480DA</p>
+        </div>
+<div class="produit" id=" clavier SteelSeries" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71NFUiC1XaL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>SteelSeries Apex Pro Mini Wireless clavier gaming HyperMagnetic - Format compact 60% - 
+
+Actionnement...</p>
+            <p>Prix du Produit : 5 3120DA</p>
+        </div>
+ <div class="produit" id=" clavier razer" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/61i4phXNobL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>Razer Huntsman Mini (Switches Violets) - Clavier Gamer Compact à 60%...</p>
+            <p>Prix du Produit : 2 1070DA</p>
+        </div>
+<div class="produit" id="clavier SteelSeries" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/61H9sab-XlL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>SteelSeries Arctis Nova 7 - Casque de jeu Wireless - Multi-System Gaming & Mobile - Système Nova Acoustic - 2.4...</p>
+            <p>Prix du Produit : 3 6480DA</p>
+        </div>
+      <div class="produit" id="souris razer" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/61NgwKDICfL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Razer Viper V3 HyperSpeed - Souris sans fil pour l’Esport (Capteur optique 30K Focus Pro, Jusqu’à 280 Heures...</p>
+            <p>Prix du Produit : 2 1070DA</p>
+        </div>
+<div class="produit" id="souris logitech" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/51VpABY-b6L._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Logitech G305 Radio-fréquence Souris Gamer sans Fil, Capteur Gaming HERO, 12 000 PPP, Ultra-Léger, 6...</p>
+            <p>Prix du Produit : 1 3500DA</p>
+        </div>
+<div class="produit" id="souris SteelSeries" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/61suOIN5u0L._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>SteelSeries Aerox 3 Wireless Onyx (2022) - Souris de jeu super légère - 68 g, design résistant à l’eau - Autonomie...</p>
+            <p>Prix du Produit : 2 1100DA</p>
+        </div>
+<div class="produit" id="casque Austrian" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/51hUptd5NzL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Austrian Audio PG16 Pro Gaming Headset with Microphone (accessoire de jeu pliable, son haute résolution,...</p>
+            <p>Prix du Produit : 2 8500DA</p>
+        </div>
+<div class="produit" id="souris apple" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/21M6q1Wvp3L._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>apple magic mouse 2</p>
+            <p>Prix du Produit : 2 3000DA</p>
+        </div>
+<div class="produit" id="clavier SteelSeries" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/61euP7SawwL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>Steelseries Apex 5 - Clavier de Gaming Hybride Mécanique - Illumination RVB Par Touche - Affichage 
+
+Intelligent Oled -...</p>
+            <p>Prix du Produit : 2 3500DA</p>
+        </div>
+ <div class="produit" id="casque BEYERDYNAMIC" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" 
+
+style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71Kk9o5hDHL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Casques traditionnels BEYERDYNAMIC DT 990 PRO NOIR Ouverts Pro</p>
+            <p>Prix du Produit : 3 8400DA</p>
+        </div>
+ 
+   <div class="produit" id="souris APM" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/61OGG30inKL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>APM Souris Slim sans-Fil, 2.4 GHz, Silencieuse, Récepteur USB, Ambidextre, Plate, 1000 DPI, Pile Incluse, Compatible...</p>
+            <p>Prix du Produit : 2 100DA</p>
+        </div>
+<div class="produit" id="souris logitech" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/51VRu0zm1IL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Logitech G PRO X SUPERLIGHT 2 LIGHTSPEED Souris Gaming Sans Fil, Légère, Switchs Hybrides...</p>
+            <p>Prix du Produit : 4 9100DA</p>
+        </div>
+<div class="produit" id="souris logitech" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/519DPaSOa5L._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Logitech G PRO X SUPERLIGHT 2 LIGHTSPEED Souris Gaming Sans Fil, Légère, Switchs Hybrides...</p>
+            <p>Prix du Produit : 4 9100DA</p>
+        </div>
+ <div class="produit" id="casque Roccat" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71nMYLKi0LL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Roccat Elo 7.1 USB – Casque de jeu Son Surround RGB pour PC, Réglable , Noir</p>
+            <p>Prix du Produit : 1 6070DA</p>
+        </div>
+<div class="produit" id="clavier roccat" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/81LbFtWP-1L._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>Roccat Vulcan TKL AIMO Gaming Tastatur Kompakte mechanische RGB-Gaming-Tastatur mit Red Switches und...</p>
+            <p>Prix du Produit : 2 4240DA</p>
+        </div>
+<div class="produit" id="clavie roccat" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71vKQ-dYLxL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>Roccat Vulcan II - Clavier de Jeu Mécanique Pour Pc, Touches Rétro-Éclairées RGB Personnalisables, 
+
+Repose-</p>
+            <p>Prix du Produit : 3 8000DA</p>
+        </div>
+<div class="produit" id="clavier HyperX" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confirmation-d-achat-HyperX-
+
+Cloud-II/';" style="cursor: 
+
+pointer;">
+            <img src="https://m.media-amazon.com/images/I/61i+QbshAFL._AC_UL320_.jpg" alt="Image 
+
+Produit 1" title="Description de l'image 1">
+            <p>HyperX Cloud Alpha Binaural Bandeau Noir, Rouge - Casques audio (PC/Jeux, Binaural, Bandeau, Noir, Rouge,... </p>
+            <p>Prix du Produit : 1 9840DA</p>
+        </div>
+
+   <div class="produit" id="clavier MSI" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71lyv7MsINL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>MSI Vigor GK41 Clavier Gaming Mécanique FR - Switches Kailh Red (Linéaires), Touches Ergonomiques, 
+
+Base...</p>
+            <p>Prix du Produit : 1 1900DA</p>
+        </div>
+        <div class="produit" id="casque jbl" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confirmation-d-achat-RAZER-FILAIRE-
+
+SOURIS-BASILISK-V2-NOIR-/';" style="cursor: 
+
+pointer;">
+            <img src="https://m.media-amazon.com/images/I/81OhA4xHbwL._AC_UL320_.jpg" alt="Image Produit 2" title="Description de 
+
+l'image 2">
+            <p>JBL Quantum 610 Casque gaming supra-auriculaire – Sans fil 2,4 GHz et jack 3,5 mm – Avec Microphone Boom...</p>
+            <p>Prix du Produit : 2 7000DA</p>
+        </div>
+<div class="produit" id="clavier spirit of gamer" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/618JNxHNK8L._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>Spirit Of Gamer XPERT K200 | Clavier Gamer sans Fil & Bluetooth RGB | TKL AZERTY Ultra Compact 60% | 
+
+Switche...</p>
+            <p>en repture de stocke</p>
+        </div>
+<div class="produit" id="claier Roccat" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confirmation-d-achat-RAZER-FILAIRE-
+
+SOURIS-BASILISK-V2-NOIR-/';" style="cursor: 
+
+pointer;">
+            <img src="https://m.media-amazon.com/images/I/71aVWYHmYVL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 2">
+            <p>Roccat Vulcan II - Clavier de Jeu Mécanique Pour Pc, Touches Rétro-Éclairées RGB Personnalisables, 
+
+Repo...</p>
+            <p>Prix du Produit :  4 7500DA</p>
+        </div>
+
+        <div class="produit" id="clavier Razer" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" 
+
+style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71TQvPaZ6SL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>Razer BlackWidow V3 (Green Switch) - Clavier de Jeu mécanique Filaire avec éclairage RGB 
+
+(Switchs...</p> 
+            <p>Prix du Produit :  4 5400DA</p>
+        </div>
+<div class="produit" id="clavier sprit of gamer" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-
+
+Huntsman-Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71jhP-RRsEL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>SPIRIT OF GAMER - Pack Gaming 3 en 1 Pro-MK5 - Clavier Gamer RGB Anti-Ghosting - Souris Gamer 
+
+7...</p>
+            <p>Prix du Produit : 8100DA</p>
+        </div>
+<div class="produit" id="souris logitech" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/517gxyc0stL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Logitech G PRO X SUPERLIGHT 2 LIGHTSPEED Souris Gaming Sans Fil, Légère, Switchs Hybrides..</p>
+            <p>Prix du Produit : 4 1900DA</p>
+        </div>
+<div class="produit" id="casque razer" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71kY+ry+PwL._AC_UL320_.jpg" alt="" title="Description de l'image 3">
+            <p>Razer BlackShark V2 X - Casque Gaming Esports Multiplateforme (Haut-parleurs Triforce de 50mm,...</p>
+            <p>Prix du Produit : 1 1300DA</p>
+        </div>
+<div class="produit" id="clavier razer" onclick="window.location.href='https://pixelfegze.github.io/PixelFegze-
+
+confitmation-d-achat-clavier-Huntsman-
+
+Mini/';" style="cursor: pointer;">
+            <img src="https://m.media-amazon.com/images/I/71-8qNcSUzL._AC_UL320_.jpg" alt="" title="Description de 
+
+l'image 3">
+            <p>Razer Huntsman Elite (Purple Switch) - Clavier de Jeu avec commutateurs opto-mécaniques (contrôle 
+
+Rotatif,...</p>
+            <p>Prix du Produit : 3 8900DA</p>
+        </div>
+<script>
+    var toggleSideNav = document.getElementById('toggleSideNav');
+    var sideNav = document.getElementById('sideNav');
+    var closeBtn = document.getElementById('closeBtn');
+
+    // Afficher la barre latérale lors du clic sur le bouton avec les trois lignes
+    toggleSideNav.addEventListener('click', function() {
+        sideNav.style.left = '0';
+        document.body.style.overflow = 'hidden'; // Empêche le défilement de la page lorsque la barre latérale est 
+
+affichée
+    });
+
+    // Masquer la barre latérale lors du clic sur le bouton de fermeture
+    closeBtn.addEventListener('click', function() {
+        sideNav.style.left = '-250px'; // Changer la valeur pour masquer complètement la barre latérale
+        document.body.style.overflow = ''; // Active à nouveau le défilement de la page
+    });
+
+    // Masquer la barre latérale lors du clic sur une autre partie de la page
+    document.addEventListener('click', function(event) {
+        if (!sideNav.contains(event.target) && event.target !== toggleSideNav) {
+            sideNav.style.left = '-250px'; // Changer la valeur pour masquer complètement la barre latérale
+            document.body.style.overflow = ''; // Active à nouveau le défilement de la page
+        }
+    });
+   function filterCategories() {
+    var input, filter, produits, produit, i, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    produits = document.getElementsByClassName('produit');
+    for (i = 0; i < produits.length; i++) {
+        produit = produits[i];
+        txtValue = produit.textContent || produit.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            produit.style.display = '';
+        } else {
+            produit.style.display = 'none';
+        }
+    }
+}
+let panier = [];
+
+function confirmerAjoutAuPanier(nomProduit) {
+    if (confirm("Voulez-vous vraiment ajouter " + nomProduit + " au panier ?")) {
+        ajouterAuPanier(nomProduit);
+    }
+}
+
+function ajouterAuPanier(nomProduit) {
+    panier.push(nomProduit);
+    mettreAJourNombreArticlesPanier();
+}
+
+function mettreAJourNombreArticlesPanier() {
+    let panierBtn = document.getElementById("panier-btn");
+    panierBtn.textContent = "Panier (" + panier.length + ")";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    mettreAJourNombreArticlesPanier();
+
+    let boutonsAjouterPanier = document.querySelectorAll(".ajouter-panier");
+    boutonsAjouterPanier.forEach(function(bouton) {
+        bouton.addEventListener("click", function() {
+            let nomProduit = bouton.getAttribute("data-produit");
+            confirmerAjoutAuPanier(nomProduit);
+        });
+    });
+
+    let panierBtn = document.getElementById("panier-btn");
+    panierBtn.addEventListener("click", function() {
+        window.location.href = "lien_vers_page_panier.html";
+    });
+});
+
+</script>
+
+</body>
+</html>
